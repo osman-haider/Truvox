@@ -3,6 +3,7 @@ pronouncing>=0.2.0        # CMUdict wrapper used by the rule-based G2P source
 panphon>=0.19             # phonological-feature distance for the confidence scorer
 anthropic>=0.40.0         # LLM phonetician source (set ANTHROPIC_API_KEY)
 python-dotenv>=1.0.0
+mcp[cli]>=1.2.0           # MCP tool wrapper (src/truvox/mcp_server.py); [cli] adds `mcp dev`
 
 # Dev / test
 pytest>=8.0.0
@@ -21,3 +22,8 @@ pytest-cov>=5.0.0
 
 # Optional — experiment tracking for the stretch fine-tune (training/)
 # wandb>=0.17
+
+# Optional — real TTS calls for the benchmark harness (benchmark/). Install
+# whichever provider(s) you have API keys for; the harness skips the rest.
+# elevenlabs>=1.0
+# azure-cognitiveservices-speech>=1.38
