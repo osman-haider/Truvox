@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.idea/
+data/verified_store.db
+training/checkpoints/
+training/wandb/
+*.pt
+*.ckpt
+.DS_Store

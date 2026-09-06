@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "truvox"
+version = "0.1.0"
+description = "A multi-source pronunciation confidence engine — ensemble G2P, verified corrections, context-aware ranking, and an MCP tool for voice agents."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+
+dependencies = [
+    "pronouncing>=0.2.0",
+    "panphon>=0.19",
+    "anthropic>=0.40.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+neural = ["deep-phonemizer>=0.0.19", "torch>=2.2"]
+multilingual = ["epitran>=1.24"]
+train = ["wandb>=0.17"]
+dev = ["pytest>=8.0.0", "pytest-cov>=5.0.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
