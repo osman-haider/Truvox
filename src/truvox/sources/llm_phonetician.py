@@ -53,12 +53,15 @@ def _build_default_client():
         )
     try:
         import anthropic
+
+        return anthropic.Anthropic()
     except ImportError as exc:
         raise LLMPhoneticianUnavailable(
             "the 'anthropic' package isn't installed — "
             "run `pip install -r requirements.txt`"
         ) from exc
-    return anthropic.Anthropic()
+    except Exception as exc:  # noqa: BLE001 - client construction failing shouldn't crash the pipeline
+        raise LLMPhoneticianUnavailable(f"could not construct the Anthropic client: {exc}") from exc
 
 
 def _extract_text(response) -> str:
