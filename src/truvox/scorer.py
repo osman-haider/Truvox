@@ -48,15 +48,25 @@ _NO_CORROBORATION_AGREEMENT = 0.5  # neutral score when a candidate can't be cro
 @lru_cache(maxsize=1)
 def _panphon_distance():
     """Returns a callable(ipa_a, ipa_b) -> float, or None if panphon isn't
-    installed. Cached so we only pay the (small) import + data-load cost
-    once per process.
+    installed or its feature table couldn't be loaded. Cached so we only
+    pay the (small) import + data-load cost once per process — including
+    the cost of a failed attempt, which we don't want to retry on every
+    call.
+
+    The broad except here is deliberate: panphon's constructor reads a
+    bundled CSV of its own, and on some platforms that fails for reasons
+    that have nothing to do with our code (on Windows specifically,
+    pandas can end up decoding that file with the system codepage instead
+    of UTF-8, which raises UnicodeDecodeError, not ImportError). Any
+    failure to construct it should fall back to the plain Levenshtein
+    distance below, not crash the scorer.
     """
     try:
         from panphon.distance import Distance
-    except ImportError:
+
+        return Distance().weighted_feature_edit_distance
+    except Exception:  # noqa: BLE001 - see docstring: any failure here should degrade, not crash
         return None
-    dist = Distance()
-    return dist.weighted_feature_edit_distance
 
 
 def _levenshtein(a: str, b: str) -> int:
